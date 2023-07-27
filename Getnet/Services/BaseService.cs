@@ -9,7 +9,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace Getnet.Services
 {
@@ -66,7 +65,7 @@ namespace Getnet.Services
 
         }
 
-        protected async Task<(string, HttpStatusCode)> Execute(HttpRequestMessage request)
+        protected async Task<(HttpContent, HttpStatusCode)> Execute(HttpRequestMessage request)
         {
             try
             {
@@ -74,13 +73,13 @@ namespace Getnet.Services
                 //Response with header gzip must to read as stream and descompact
                 if (result.Content.Headers.ContentEncoding.Any(x => x == "gzip"))
                 {
-                    var content = Descompress(await result.Content.ReadAsStreamAsync());
-                    return (content, result.StatusCode);
+                    var content = Decompress(await result.Content.ReadAsStreamAsync());
+                    return (result.Content, result.StatusCode);
                 }
                 else
                 {
                     var content = await result.Content.ReadAsStringAsync();
-                    return (content, result.StatusCode);
+                    return (result.Content, result.StatusCode);
                 }
             }
 
@@ -102,7 +101,7 @@ namespace Getnet.Services
             }
         }
 
-        protected string Descompress(Stream stream)
+        protected string Decompress(Stream stream)
         {
             try
             {
@@ -117,7 +116,7 @@ namespace Getnet.Services
             }
             catch (Exception ex)
             {
-                throw new ApplicationException($"DESCOMPRESS ERROR", ex);
+                throw new ApplicationException($"DECOMPRESS ERROR", ex);
             }
         }
 

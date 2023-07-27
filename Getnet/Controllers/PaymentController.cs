@@ -20,7 +20,7 @@ namespace Getnet.Controllers
         [HttpPost("[controller]/TokenCard")]
 
         //parameters: CardNumber and CustomerId
-        public async Task<ActionResult> CardTokenization([FromBody] CardPaymentRequest request)
+        public async Task<ActionResult> CardTokenization([FromBody] TokenCardRequest request)
         {
             JsonResult data;
             try
@@ -35,7 +35,7 @@ namespace Getnet.Controllers
 
                 await service.Authentication(credential);
 
-                var response = await service.CardTokenization(tokenCardRequest);
+                var response = await service.CardTokenization(request);
 
                 data = new JsonResult(response);
 

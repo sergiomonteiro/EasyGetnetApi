@@ -91,12 +91,12 @@ namespace Getnet.Services
 
                 if (statusCode == System.Net.HttpStatusCode.OK || statusCode == System.Net.HttpStatusCode.Created)
                 {
-                    var response = DeserializeHttpContent<TokenCardResponse>(content);
+                    var response = DeserializeHttpContent<TokenCardResponse>(content.ToString());
                     return response;
                 }
                 else
                 {
-                    var response = DeserializeHttpContent<TokenCardResponseError>(content);
+                    var response = DeserializeHttpContent<TokenCardResponseError>(content.ToString());
                     return response;
                 }
             }
@@ -126,13 +126,13 @@ namespace Getnet.Services
             {
                 //Some calls getnet response with gzip compress mode, must read as stream a 
                 var streamResponse = await content.ReadAsStreamAsync();
-                var response = Descompress<TokenCardResponse>(streamResponse);
+                var response = Decompress(streamResponse);
                 return response;
             }
             else
             {
                 var streamResponse = await content.ReadAsStreamAsync();
-                var response = Descompress<TokenCardResponseError>(streamResponse);
+                var response = Decompress(streamResponse);
                 return response;
             }
 
@@ -157,12 +157,12 @@ namespace Getnet.Services
 
                 if (statusCode == System.Net.HttpStatusCode.OK || statusCode == System.Net.HttpStatusCode.Created)
                 {
-                    var response = DeserializeHttpContent<TokenCardResponse>(content);
+                    var response = DeserializeHttpContent<TokenCardResponse>(content.ToString());
                     return response;
                 }
                 else
                 {
-                    var response = DeserializeHttpContent<TokenCardResponseError>(content);
+                    var response = DeserializeHttpContent<TokenCardResponseError>(content.ToString());
                     return response;
                 }
             }
@@ -170,9 +170,6 @@ namespace Getnet.Services
             {
                 throw;
             }
-
-
-
         }
 
         #endregion
